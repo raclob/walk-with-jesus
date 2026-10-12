@@ -1,0 +1,65 @@
+name: Build Android test APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: app
+    env:
+      NODE_ENV: production
+      EXPO_NO_TELEMETRY: '1'
+      EXPO_PUBLIC_API_URL: ${{ vars.EXPO_PUBLIC_API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - run: npm ci --include=dev
+      - run: npm run version:check
+      - run: npm run typecheck
+      - run: npx expo prebuild --platform android --no-install
+      - run: npm run version:check
+      - run: chmod +x android/gradlew
+      - run: ./gradlew assembleRelease --no-daemon --max-workers=2 -PreactNativeArchitectures=arm64-v8a
+        working-directory: app/android
+      - name: Name and verify the APK
+        id: release
+        working-directory: .
+        run: |
+          app_release=$(cat VERSION)
+          apk_name="walk-with-jesus-v${app_release}.apk"
+          cp app/android/app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/$apk_name"
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "$RUNNER_TEMP/$apk_name"
+          "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 4 "$RUNNER_TEMP/$apk_name"
+          (cd "$RUNNER_TEMP" && sha256sum "$apk_name" > SHA256SUMS)
+          echo "version=$app_release" >> "$GITHUB_OUTPUT"
+          echo "apk=$RUNNER_TEMP/$apk_name" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: walk-with-jesus-v${{ steps.release.outputs.version }}
+          path: |
+            ${{ steps.release.outputs.apk }}
+            ${{ runner.temp }}/SHA256SUMS
+          if-no-files-found: error

@@ -1,0 +1,14 @@
+**/node_modules/
+**/.expo/
+**/dist/
+**/.gradle/
+**/.cxx/
+**/build/
+**/local.properties
+**/.env
+**/.env.*
+!**/.env.example
+*.jks
+*.keystore
+!app/android/app/debug.keystore
+.DS_Store
