@@ -1,8 +1,8 @@
 # Walk with Jesus for Android
 
-**[Download Walk with Jesus v0.002](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.002.apk)**
+**[Download Walk with Jesus v0.003](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.003.apk)**
 
-[APK file page](downloads/walk-with-jesus-v0.002.apk) · [Release v0.002](https://github.com/raclob/walk-with-jesus/releases/tag/v0.002)
+[APK file page](downloads/walk-with-jesus-v0.003.apk) · [Release v0.003](https://github.com/raclob/walk-with-jesus/releases/tag/v0.003)
 
 A Bible reading and study app with a midnight-and-gold theme, offline KJV text, reading journeys, prophecy discoveries, progress tracking, and sermon notes.
 
@@ -37,7 +37,7 @@ Reading progress, preferences, and sermons are stored on your device. Existing w
 
 GitHub's **Code → Download ZIP** includes the installable APK in `downloads/`.
 
-The current release is **v0.002**; releases increase sequentially from v0.001. [VERSION](VERSION) is the source of truth; [versioning instructions](docs/VERSIONING.md) explain how it stays synchronized with Settings and Android updates. Future changes should follow [AGENTS.md](AGENTS.md).
+The current release is **v0.003**; releases increase sequentially from v0.001. [VERSION](VERSION) is the source of truth; [versioning instructions](docs/VERSIONING.md) explain how it stays synchronized with Settings and Android updates. Future changes should follow [AGENTS.md](AGENTS.md).
 
 For development:
 

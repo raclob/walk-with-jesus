@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.003 — 2026-10-11
+
+- Preserve note fragments separated by newlines in the instant offline summary, including lines without sentence punctuation.
+- Added a regression check for multiline sermon notes; retains the free on-device AI introduced in v0.002.
+- Updated synchronized release metadata to v0.003 / Android code 3.
+
 ## v0.002 — 2026-10-11
 
 - Added free, private sermon summaries with no API key, subscription, or backend.

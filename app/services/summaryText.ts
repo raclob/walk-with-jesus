@@ -17,7 +17,7 @@ export function hasSummaryContent(input: SummaryInput): boolean {
 }
 
 function keySentences(text: string, limit: number): string[] {
-  const sentences = (text.match(/[^.!?\n]+(?:[.!?]+|$)/g) ?? []).map(s => s.trim()).filter(Boolean).slice(0, 2000);
+  const sentences = (text.match(/[^.!?\n]+[.!?]*/g) ?? []).map(s => s.trim()).filter(Boolean).slice(0, 2000);
   if (sentences.length <= limit) return sentences;
   const words = (s: string) => (s.toLowerCase().match(/[a-z']{4,}/g) ?? []).filter(w => !STOP.has(w));
   const frequency = new Map<string, number>();

@@ -16,9 +16,9 @@
 
 ## APK
 
-The v0.002 ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature and ZIP alignment checks pass. All 37 packaged ARM64 native libraries have 16 KB ELF segment alignment.
+The v0.003 ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature and ZIP alignment checks pass. All 37 packaged ARM64 native libraries have 16 KB ELF segment alignment.
 
-`downloads/walk-with-jesus-v0.002.apk` is 60,632,425 bytes (57.8 MiB). Embedded config reports release `0.002`; Android reports version `0.0.2`, code `2`, package `com.walkwithjesus.app`, minimum SDK 24, and target SDK 36. The APK contains the local AI runtime and license notices. Model weights are downloaded separately when enabled.
+`downloads/walk-with-jesus-v0.003.apk` is 60,632,405 bytes (57.8 MiB). Embedded config reports release `0.003`; Android reports version `0.0.3`, code `3`, package `com.walkwithjesus.app`, minimum SDK 24, and target SDK 36. The APK contains the local AI runtime and license notices. Model weights are downloaded separately when enabled.
 
 ## Still to test
 
