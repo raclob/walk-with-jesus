@@ -1,3 +1,6 @@
+// React's act helper is available in test/development mode, including when
+// the surrounding native-build workflow uses NODE_ENV=production.
+process.env.NODE_ENV = 'test';
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
