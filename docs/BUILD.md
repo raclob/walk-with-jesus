@@ -60,3 +60,5 @@ The app calls `POST <base>/sermon/summarize` with title, speaker, date, passage,
 The Android workflow runs on pushes to `main`, pull requests, and manual dispatch. It installs dependencies, checks synchronized versions and TypeScript, regenerates the Android project, builds an ARM64 test APK, verifies its signature and ZIP alignment, and uploads a version-named artifact with a checksum.
 
 Published test APKs are tracked in `downloads/` so GitHub's source ZIP includes an installable app. Follow [VERSIONING.md](VERSIONING.md) when publishing an update. Device testing is tracked separately in [STATUS.md](STATUS.md).
+
+The v0.001 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.
