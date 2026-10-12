@@ -29,6 +29,10 @@ export interface SermonLog {
   notes?: string;
   aiSummary?: string;
   aiSummaryGeneratedAt?: number;
+  summarySource?: "local-ai" | "offline";
+  summaryInputSnapshot?: string;
+  summaryInputTruncated?: boolean;
+  summaryModel?: string;
   createdAt: number;
   updatedAt: number;
 }

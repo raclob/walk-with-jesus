@@ -12,3 +12,5 @@
 *.keystore
 !app/android/app/debug.keystore
 .DS_Store
+app/android/app/src/main/assets/ggml-hexagon/
+*.gguf

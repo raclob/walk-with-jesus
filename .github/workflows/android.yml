@@ -23,7 +23,6 @@ jobs:
     env:
       NODE_ENV: production
       EXPO_NO_TELEMETRY: '1'
-      EXPO_PUBLIC_API_URL: ${{ vars.EXPO_PUBLIC_API_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -42,6 +41,7 @@ jobs:
       - run: npm ci --include=dev
       - run: npm run version:check
       - run: npm run typecheck
+      - run: npm run test:summaries
       - run: npx expo prebuild --platform android --no-install
       - run: npm run version:check
       - run: chmod +x android/gradlew

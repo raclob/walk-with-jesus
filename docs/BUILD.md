@@ -14,6 +14,7 @@ cd app
 npm ci
 npm run version:check
 npm run typecheck
+npm run test:summaries
 npm run export:android
 ```
 
@@ -47,13 +48,13 @@ npm run build:apk
 
 The preview profile creates an APK. Expo may ask to create/link a project and configure signing credentials. Use your own Expo account; service limits may apply. `npm run build:store` produces an Android App Bundle with production credentials for store distribution. No Play Store upload has been made.
 
-## Optional sermon AI
+## Free on-device summaries
 
-Sermon notes work without a backend. For AI summaries, copy `app/.env.example` to `app/.env`, set `EXPO_PUBLIC_API_URL` to your complete HTTPS API base, and rebuild. GitHub Actions can use the repository variable `EXPO_PUBLIC_API_URL` instead.
+Summaries need no backend, API key, account, or paid provider. The instant extractive summary is available immediately. The optional AI model downloads when the user chooses **Download free AI model** in a sermon; after download, inference is local and works offline.
 
-The app calls `POST <base>/sermon/summarize` with title, speaker, date, passage, points, supplemental references, and notes. It expects `{ "summary": "..." }` or `{ "error": "..." }`.
+See [AI.md](AI.md) for the pinned model, licensing, download integrity, privacy, and remaining device checks. `llama.rn` native libraries install through its checksum-verified postinstall step. In a proxy-only development environment, that downloader needs proxy support or a manually verified native-archive installation. GitHub-hosted CI performs the normal install.
 
-`app/backend-reference/sermon.ts` is an integration reference, not a deployed server. Keep provider API keys on the server; never include them in public Expo variables.
+The Expo plugin `app/plugins/with-on-device-ai.cjs` compresses native libraries for a practical APK size and copies `app/licenses/` into the Android assets directory. Model weights are downloaded separately and must not be committed to Git. The original server route in `app/backend-reference/` is retained as historical reference; the v0.002 app does not call it.
 
 ## Continuous integration and releases
 
@@ -61,4 +62,4 @@ The Android workflow runs on pushes to `main`, pull requests, and manual dispatc
 
 Published test APKs are tracked in `downloads/` so GitHub's source ZIP includes an installable app. Follow [VERSIONING.md](VERSIONING.md) when publishing an update. Device testing is tracked separately in [STATUS.md](STATUS.md).
 
-The v0.001 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.
+The v0.002 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.

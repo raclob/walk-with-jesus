@@ -10,18 +10,21 @@
 - The provider catalog identifies YLT as New Testament only; Matthew 1 returns 25 verses. Unsupported Old Testament chapters are rejected locally with guidance; supported chapters still load from cache.
 - Source organized under `app/`, with root workflows and separate `docs/` and `downloads/`.
 - Release metadata synchronized from `VERSION`, including the version displayed in Settings.
+- Instant summaries preserve provided notes and scripture references. Automated tests cover empty/long notes, missing models, storage errors, checksum failures, cancellation, concurrent requests, native context cleanup, and model removal.
+- Pinned SmolLM2 weights verified against their published SHA-256 and tested through desktop llama.cpp with sample sermon notes.
+- Model/runtime license notices included in Android assets; model weights remain outside the APK.
 
 ## APK
 
-The organized repository's ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature verification and 16 KB native-library ZIP alignment checks pass.
+The v0.002 ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature and ZIP alignment checks pass. All 37 packaged ARM64 native libraries have 16 KB ELF segment alignment.
 
-`downloads/walk-with-jesus-v0.001.apk` is a 40.7 MiB development-signed test APK. Its embedded Expo config reports release `0.001`; Android metadata reports version `0.0.1`, code `1`, package `com.walkwithjesus.app`, minimum SDK 24, target SDK 36, and ARM64. The compiled app bundle is embedded, so no Metro development server is needed.
+`downloads/walk-with-jesus-v0.002.apk` is 60,632,425 bytes (57.8 MiB). Embedded config reports release `0.002`; Android reports version `0.0.2`, code `2`, package `com.walkwithjesus.app`, minimum SDK 24, and target SDK 36. The APK contains the local AI runtime and license notices. Model weights are downloaded separately when enabled.
 
 ## Still to test
 
 No emulator or physical phone was available for runtime acceptance testing. Check onboarding; Bible/search/chapter navigation; Android Back and modal dismissal; mark-read persistence after relaunch; sermon edits followed immediately by Back; keyboard resizing; chapter text themes; large system fonts; gesture and three-button navigation; offline KJV reading; online translation failures and recovery.
 
-Live sermon AI was not tested because no backend deployment URL was supplied. Online translation checks cover the sample chapters above, rather than every book.
+Real-phone AI inference, speed/memory behavior, model download, cancel/remove, backgrounding, restart persistence, and summary quality have not yet been verified. The AI feature needs no backend. Online translation checks cover the sample chapters above, rather than every book.
 
 ## Distribution
 

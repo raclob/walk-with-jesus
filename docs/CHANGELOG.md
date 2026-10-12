@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.002 — 2026-10-11
+
+- Added free, private sermon summaries with no API key, subscription, or backend.
+- Optional SmolLM2-360M-Instruct Q4_K_M runs on-device after a roughly 270 MB download.
+- Instant extractive summaries work without a model or internet and preserve the supplied notes and references.
+- Added download progress, integrity checks, cancellation, model removal, and native-memory cleanup.
+- Saved summaries retain their source and the notes snapshot, so edits remain visibly stale even after restarting.
+- Included model/runtime license notices and compressed native library packaging.
+- Updated synchronized release metadata to v0.002 / Android code 2.
+
+Desktop sample model inference and automated logic checks pass. Phone inference, performance, and lifecycle testing remain pending.
+
 ## v0.001 — 2026-10-11
 
 - Initial Android test release of Walk with Jesus, preserving Bible reading, journeys, prophecies, progress, and sermon notes.

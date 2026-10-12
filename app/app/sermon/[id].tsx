@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Stack, router, useLocalSearchParams } from "expo-router";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -25,7 +25,7 @@ import {
 import { useSermons, makeSermonId, type SermonPoint, type SermonSupplement } from "@/contexts/SermonContext";
 import { useColors } from "@/hooks/useColors";
 
-const API_BASE = (process.env.EXPO_PUBLIC_API_URL ?? "").replace(/\/+$/, "");
+import { SermonSummary } from "@/components/SermonSummary";
 
 function pushReference(ref: SerializedReference) {
   if (ref.verseStart) {
@@ -68,30 +68,6 @@ function SermonEditor({ sermon }: { sermon: import("@/contexts/SermonContext").S
   const [passageError, setPassageError] = useState<string | null>(null);
   const [suppError, setSuppError] = useState<string | null>(null);
 
-  const [aiSummary, setAiSummary] = useState<string | undefined>(sermon?.aiSummary);
-  const [aiSummaryGeneratedAt, setAiSummaryGeneratedAt] = useState<number | undefined>(sermon?.aiSummaryGeneratedAt);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiError, setAiError] = useState<string | null>(null);
-
-  const lastAiSnapshotRef = useRef<string | null>(null);
-  const [aiStale, setAiStale] = useState(false);
-
-  function buildSnapshotKey(): string {
-    return JSON.stringify({ title, speaker, date, passage, points, supplemental, notes });
-  }
-
-  useEffect(() => {
-    if (aiSummaryGeneratedAt && !lastAiSnapshotRef.current) {
-      lastAiSnapshotRef.current = buildSnapshotKey();
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!aiSummaryGeneratedAt) return;
-    if (!lastAiSnapshotRef.current) return;
-    setAiStale(buildSnapshotKey() !== lastAiSnapshotRef.current);
-  }, [title, speaker, date, passage, points, supplemental, notes]);
-
   // Auto-save on any change
   useEffect(() => {
     if (!sermon) return;
@@ -103,11 +79,9 @@ function SermonEditor({ sermon }: { sermon: import("@/contexts/SermonContext").S
         points,
         supplemental,
         notes: notes || undefined,
-        aiSummary,
-        aiSummaryGeneratedAt,
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, speaker, date, passage, points, supplemental, notes, aiSummary, aiSummaryGeneratedAt]);
+  }, [title, speaker, date, passage, points, supplemental, notes]);
 
   const passageLabel = useMemo(
     () => (passage ? formatSerialized(passage) : null),
@@ -244,40 +218,6 @@ function SermonEditor({ sermon }: { sermon: import("@/contexts/SermonContext").S
     );
   };
 
-  const handleGenerateSummary = async () => {
-    if (!API_BASE) {
-      setAiError("AI summaries are not connected in this build. Your sermon notes are still saved on this device.");
-      return;
-    }
-    if (!API_BASE.startsWith("https://")) {
-      setAiError("The summary service requires a secure HTTPS connection.");
-      return;
-    }
-    setAiLoading(true);
-    setAiError(null);
-    try {
-      if (!API_BASE) throw new Error("API not configured.");
-      const res = await fetch(`${API_BASE}/sermon/summarize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, speaker, date, passage, points, supplemental, notes }),
-      });
-      const data = (await res.json()) as { summary?: string; error?: string };
-      if (!res.ok || data.error) {
-        setAiError(data.error ?? "Something went wrong. Please try again.");
-      } else if (data.summary) {
-        setAiSummary(data.summary);
-        const now = Date.now();
-        setAiSummaryGeneratedAt(now);
-        lastAiSnapshotRef.current = buildSnapshotKey();
-        setAiStale(false);
-      }
-    } catch {
-      setAiError("Could not reach the server. Check your connection.");
-    } finally {
-      setAiLoading(false);
-    }
-  };
 
   return (
     <KeyboardAvoidingView
@@ -482,57 +422,11 @@ function SermonEditor({ sermon }: { sermon: import("@/contexts/SermonContext").S
           />
         </View>
 
-        {/* AI Summary */}
-        <View style={{ marginTop: 28 }}>
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: c.foreground }]}>AI Summary</Text>
-          </View>
-
-          {aiStale && aiSummary ? (
-            <View style={[styles.staleBox, { borderColor: c.gold + "60", backgroundColor: c.gold + "14" }]}>
-              <Ionicons name="warning-outline" size={14} color={c.gold} />
-              <Text style={[styles.staleText, { color: c.gold }]}>
-                Your notes have changed since this summary was generated. Regenerate to update it.
-              </Text>
-            </View>
-          ) : null}
-
-          {aiSummary ? (
-            <View style={[styles.summaryCard, { backgroundColor: c.card, borderColor: c.border }]}>
-              <View style={styles.summaryHeader}>
-                <Ionicons name="sparkles" size={14} color={c.gold} />
-                <Text style={[styles.summaryLabel, { color: c.gold }]}>AI-generated summary</Text>
-              </View>
-              <Text style={[styles.summaryText, { color: c.foreground }]}>{aiSummary}</Text>
-            </View>
-          ) : null}
-
-          {aiError ? (
-            <Text style={[styles.error, { color: c.destructive, marginBottom: 8 }]}>{aiError}</Text>
-          ) : null}
-
-          <Pressable
-            onPress={handleGenerateSummary}
-            disabled={aiLoading}
-            style={({ pressed }) => [
-              styles.aiBtn,
-              {
-                borderColor: c.gold + "80",
-                backgroundColor: aiSummary ? c.card : c.gold + "18",
-                opacity: pressed || aiLoading ? 0.7 : 1,
-              },
-            ]}
-          >
-            {aiLoading ? (
-              <ActivityIndicator size="small" color={c.gold} />
-            ) : (
-              <Ionicons name="sparkles" size={14} color={c.gold} />
-            )}
-            <Text style={[styles.aiBtnText, { color: c.gold }]}>
-              {aiLoading ? "Summarizing\u2026" : aiSummary ? "Regenerate summary" : "Summarize with AI"}
-            </Text>
-          </Pressable>
-        </View>
+        <SermonSummary
+          input={{ title, speaker, date, passage, points, supplemental, notes }}
+          saved={sermon}
+          onSave={(summary) => updateSermon(sermonId, summary)}
+        />
 
         <Pressable
           onPress={handleDelete}
