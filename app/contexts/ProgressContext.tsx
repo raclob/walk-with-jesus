@@ -3,6 +3,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { BOOKS, TOTAL_CHAPTERS } from "@/data/books";
 import { CANONICAL_JOURNEY, CHRONOLOGICAL_JOURNEY, JourneyType, getJourney } from "@/data/journeys";
 import { PROPHECIES, Prophecy, getPropheciesAtFulfillment, getPropheciesAtSource } from "@/data/prophecies";
+import { localDayKey, recordReadingDay } from "@/services/readingInsights";
 
 const STORAGE_KEY = "@bibleexplorer/state.v2";
 
@@ -11,6 +12,8 @@ interface PersistedState {
   journeyIndex: number;
   completedThisRun: Record<string, boolean>;
   heatMap: Record<string, number>;
+  readingDays: Record<string, number>;
+  readingHistoryStartedOn: string | null;
   discoveredProphecies: Record<string, boolean>;
   fulfilledProphecies: Record<string, boolean>;
   prestigeLevel: number;
@@ -29,6 +32,8 @@ const initialState: PersistedState = {
   journeyIndex: 0,
   completedThisRun: {},
   heatMap: {},
+  readingDays: {},
+  readingHistoryStartedOn: null,
   discoveredProphecies: {},
   fulfilledProphecies: {},
   prestigeLevel: 0,
@@ -97,7 +102,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as Partial<PersistedState>;
-          setState({ ...initialState, ...parsed });
+          setState({ ...initialState, ...parsed, readingDays: parsed.readingDays ?? {} });
         }
       } catch {
         // ignore
@@ -137,6 +142,7 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       const newlyDiscovered: Prophecy[] = [];
       const newlyFulfilled: Prophecy[] = [];
       let bookCompleted = false;
+      const readDay = localDayKey(new Date());
 
       setState((s) => {
         const key = `${bookId}:${chapter}`;
@@ -208,6 +214,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
           ...s,
           completedThisRun: newCompleted,
           heatMap: newHeat,
+          readingDays: recordReadingDay(s.readingDays, readDay),
+          readingHistoryStartedOn: s.readingHistoryStartedOn ?? readDay,
           discoveredProphecies: newDiscovered,
           fulfilledProphecies: newFulfilled,
           recentlyDiscovered: newRecent.slice(0, 20),

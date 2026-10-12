@@ -2,6 +2,7 @@
 **/.expo/
 **/dist/
 **/.gradle/
+**/.kotlin/
 **/.cxx/
 **/build/
 **/local.properties

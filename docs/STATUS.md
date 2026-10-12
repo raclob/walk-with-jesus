@@ -1,4 +1,4 @@
-# Android test release status — 2026-10-11 (America/New_York)
+# Android test release status — 2026-10-12 (UTC)
 
 ## Verified
 
@@ -13,18 +13,24 @@
 - Instant summaries preserve provided notes and scripture references. Automated tests cover empty/long notes, missing models, storage errors, checksum failures, cancellation, concurrent requests, native context cleanup, and model removal.
 - Pinned SmolLM2 weights verified against their published SHA-256 and tested through desktop llama.cpp with sample sermon notes.
 - Model/runtime license notices included in Android assets; model weights remain outside the APK.
+- Freemium logic checks: verified lifetime entitlement signatures, wrong products/subscriptions, cancellation/failure/pending, restore, revocation, theme gating, store-localized price, and retained access during catalog failures. Mocked provider tests only; no payments performed.
+- Existing progress migration, new local dated read counts, preservation on prestige, and history clearing on reset. No invented historical reading dates.
+- Text contrast checks for all five theme palettes.
+- Browser preview at 390 px: applying the free Daylight theme, persistence on reload, locked theme preview, disabled unconfigured checkout, clearly labeled sample charts, no horizontal overflow or page errors. This is a layout/interaction check, not an Android device test. Screenshots are in `docs/screenshots/`.
 
 ## APK
 
-The v0.003 ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature and ZIP alignment checks pass. All 37 packaged ARM64 native libraries have 16 KB ELF segment alignment.
+The v0.004 ARM64 release build succeeds with JDK 17, SDK 36, and Gradle 8.14.3. APK signature and ZIP alignment checks pass. All 37 packaged ARM64 native libraries have 16 KB ELF segment alignment.
 
-`downloads/walk-with-jesus-v0.003.apk` is 60,632,405 bytes (57.8 MiB). Embedded config reports release `0.003`; Android reports version `0.0.3`, code `3`, package `com.walkwithjesus.app`, minimum SDK 24, and target SDK 36. The APK contains the local AI runtime and license notices. Model weights are downloaded separately when enabled.
+`downloads/walk-with-jesus-v0.004.apk` is 64,877,498 bytes (61.9 MiB). Embedded config reports release `0.004`; Android reports version `0.0.4`, code `4`, package `com.walkwithjesus.app`, minimum SDK 24, and target SDK 36. The APK contains the local AI runtime, RevenueCat billing SDK, and license notices. Model weights are downloaded separately when enabled.
 
 ## Still to test
 
 No emulator or physical phone was available for runtime acceptance testing. Check onboarding; Bible/search/chapter navigation; Android Back and modal dismissal; mark-read persistence after relaunch; sermon edits followed immediately by Back; keyboard resizing; chapter text themes; large system fonts; gesture and three-button navigation; offline KJV reading; online translation failures and recovery.
 
 Real-phone AI inference, speed/memory behavior, model download, cancel/remove, backgrounding, restart persistence, and summary quality have not yet been verified. The AI feature needs no backend. Online translation checks cover the sample chapters above, rather than every book.
+
+Premium phone acceptance tests remain pending: Daylight and all paid theme previews, theme persistence, large text, date changes, insight charts, purchase/restore behavior, and offline entitlement access. The distributed APK has no billing key and does not take payments; Play account setup, undecided pricing, RevenueCat configuration, a production-signed Play test-track installation, and real purchase/refund tests remain to be completed. See [MONETIZATION.md](MONETIZATION.md).
 
 ## Distribution
 

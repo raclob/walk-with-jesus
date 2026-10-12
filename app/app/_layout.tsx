@@ -21,6 +21,8 @@ import { ProgressProvider } from "@/contexts/ProgressContext";
 import { SermonProvider } from "@/contexts/SermonContext";
 import { SettingsProvider } from "@/contexts/SettingsContext";
 import { TranslationProvider } from "@/contexts/TranslationContext";
+import { PremiumProvider } from "@/contexts/PremiumContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 import { useColors } from "@/hooks/useColors";
 
 SplashScreen.preventAutoHideAsync();
@@ -31,6 +33,8 @@ const queryClient = new QueryClient();
 function RootLayoutNav() {
   const c = useColors();
   return (
+    <>
+    <StatusBar style={c.dark ? "light" : "dark"} />
     <Stack
       screenOptions={{
         headerStyle: { backgroundColor: c.background },
@@ -46,7 +50,11 @@ function RootLayoutNav() {
       <Stack.Screen name="milestone/[bookId]" options={{ headerShown: false, presentation: "modal" }} />
       <Stack.Screen name="prestige" options={{ headerShown: false, presentation: "modal" }} />
       <Stack.Screen name="sermon/[id]" options={{ title: "" }} />
+      <Stack.Screen name="appearance" options={{ title: "Appearance" }} />
+      <Stack.Screen name="premium" options={{ title: "Premium" }} />
+      <Stack.Screen name="insights" options={{ title: "Reading insights" }} />
     </Stack>
+    </>
   );
 }
 
@@ -93,11 +101,12 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={{ flex: 1 }}>
             <KeyboardProvider>
+              <PremiumProvider>
+              <ThemeProvider>
               <SettingsProvider>
                 <ProgressProvider>
                   <TranslationProvider>
                     <SermonProvider>
-                      <StatusBar style="light" />
                       <RootLayoutNav />
                       {!bootHidden && (
                         <BootScreen ready={bootReady} onHidden={handleBootHidden} fontsReady={fontsReady} />
@@ -106,6 +115,8 @@ export default function RootLayout() {
                   </TranslationProvider>
                 </ProgressProvider>
               </SettingsProvider>
+              </ThemeProvider>
+              </PremiumProvider>
             </KeyboardProvider>
           </GestureHandlerRootView>
         </QueryClientProvider>

@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React, { useMemo } from "react";
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -43,7 +44,7 @@ export default function ProgressScreen() {
   const handleReset = () => {
     Alert.alert(
       "Reset everything?",
-      "This will erase all progress, prestige levels, prophecy collection, and heat map. Your journey will start completely over.",
+      "This will erase all progress, prestige levels, prophecy collection, heat map, and reading history. Your journey will start completely over.",
       [
         { text: "Cancel", style: "cancel" },
         { text: "Reset", style: "destructive", onPress: () => progress.resetAll() },
@@ -82,6 +83,16 @@ export default function ProgressScreen() {
       </View>
 
       <HeatMap />
+
+      <Pressable accessibilityRole="button" onPress={() => router.push("/insights")}
+        style={{ marginTop: 20, padding: 16, borderRadius: 14, borderWidth: 1, borderColor: c.border, backgroundColor: c.card, flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <Ionicons name="bar-chart-outline" size={22} color={c.gold} />
+        <View style={{ flex: 1, gap: 4 }}>
+          <Text style={{ fontFamily: "Inter_600SemiBold", fontSize: 15, color: c.foreground }}>Personal reading insights</Text>
+          <Text style={{ fontFamily: "Inter_400Regular", fontSize: 12, color: c.mutedForeground }}>Explore the optional Premium charts</Text>
+        </View>
+        <Ionicons name="chevron-forward" size={18} color={c.mutedForeground} />
+      </Pressable>
 
       {/* Milestone history */}
       {progress.milestoneHistory.length > 0 ? (

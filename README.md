@@ -1,10 +1,10 @@
 # Walk with Jesus for Android
 
-**[Download Walk with Jesus v0.003](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.003.apk)**
+**[Download Walk with Jesus v0.004](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.004.apk)**
 
-[APK file page](downloads/walk-with-jesus-v0.003.apk) · [Release v0.003](https://github.com/raclob/walk-with-jesus/releases/tag/v0.003)
+[APK file page](downloads/walk-with-jesus-v0.004.apk) · [Release v0.004](https://github.com/raclob/walk-with-jesus/releases/tag/v0.004)
 
-A Bible reading and study app with a midnight-and-gold theme, offline KJV text, reading journeys, prophecy discoveries, progress tracking, and sermon notes.
+A freemium Bible reading and study app with free midnight-and-gold and daylight themes, offline KJV text, reading journeys, prophecy discoveries, progress tracking, and sermon notes.
 
 ## Install on your phone
 
@@ -23,8 +23,17 @@ Requires Android 7.0+ on an ARM64 phone. This is a development-signed test relea
 - Save sermon notes, main points, and linked scripture references.
 - Summarize notes for free on your phone. The instant summary requires no download; optional SmolLM2 AI needs about 270 MB once and works offline afterward.
 - Switch to supported online public-domain translations, cached after reading. The provider's YLT covers the New Testament only.
+- Preview optional Premium themes and private personal reading insights. Core features, basic progress, and on-device AI stay free.
 
 Reading progress, preferences, and sermons are stored on your device. Existing web/Replit data is not automatically transferred. Uninstalling may remove saved data.
+
+## Optional Premium
+
+Premium is designed as a one-time unlock for three extra app themes and richer personal reading statistics. The v0.004 APK includes theme and sample-insight previews; **checkout is disabled until Google Play products and RevenueCat are configured**. This release takes no payments. Prices will come from the store.
+
+Bible reading, journeys, prophecies, sermon notes, summaries/on-device AI, existing progress and streaks, and the Midnight Gold and Daylight themes remain free. Personal reading statistics stay on the device. Daily history starts with newly recorded chapter reads; older progress is preserved without inventing dates.
+
+See [store setup and feature details](docs/MONETIZATION.md) and [privacy information](docs/PRIVACY.md). [Appearance](docs/screenshots/appearance-preview.png), [Premium](docs/screenshots/premium-preview.png), and [insight](docs/screenshots/insights-preview.png) screenshots show the browser preview at phone width; Android device testing is still pending.
 
 ## Repository layout
 
@@ -37,7 +46,7 @@ Reading progress, preferences, and sermons are stored on your device. Existing w
 
 GitHub's **Code → Download ZIP** includes the installable APK in `downloads/`.
 
-The current release is **v0.003**; releases increase sequentially from v0.001. [VERSION](VERSION) is the source of truth; [versioning instructions](docs/VERSIONING.md) explain how it stays synchronized with Settings and Android updates. Future changes should follow [AGENTS.md](AGENTS.md).
+The current release is **v0.004**; releases increase sequentially from v0.001. [VERSION](VERSION) is the source of truth; [versioning instructions](docs/VERSIONING.md) explain how it stays synchronized with Settings and Android updates. Future changes should follow [AGENTS.md](AGENTS.md).
 
 For development:
 

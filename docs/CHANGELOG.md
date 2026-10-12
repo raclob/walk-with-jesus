@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.004 — 2026-10-12
+
+- Added free Midnight Gold and Daylight app themes, plus previewable Premium Still Forest, Quiet Waters, and Evening Plum themes.
+- Added an optional one-time Premium upgrade screen and Google Play/RevenueCat purchase and restore integration. Checkout stays disabled in this test build until store configuration is supplied; no pretend unlocks or hardcoded prices.
+- Added private personal reading insight charts with clearly labeled sample previews for free users. New dated chapter-read history preserves older progress; prestige retains it and resetting progress clears it.
+- Kept all existing core features and on-device AI free, with basic progress unchanged.
+- Added automated entitlement, payment-boundary, theme, history-migration, and palette checks, plus store setup and privacy documentation.
+- Updated synchronized release metadata to v0.004 / Android code 4.
+
+
 ## v0.003 — 2026-10-11
 
 - Preserve note fragments separated by newlines in the instant offline summary, including lines without sentence punctuation.

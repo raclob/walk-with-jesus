@@ -1,6 +1,6 @@
 {
   "name": "walk-with-jesus-android",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "main": "expo-router/entry",
   "scripts": {
@@ -14,7 +14,8 @@
     "export:android": "expo export --platform android",
     "build:apk": "npx eas-cli build --platform android --profile preview",
     "build:store": "npx eas-cli build --platform android --profile production",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "test:premium": "node scripts/test-premium.cjs"
   },
   "dependencies": {
     "@expo-google-fonts/cormorant-garamond": "^0.4.1",
@@ -45,6 +46,7 @@
     "react-native": "0.81.5",
     "react-native-gesture-handler": "~2.28.0",
     "react-native-keyboard-controller": "1.18.5",
+    "react-native-purchases": "10.12.2",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
@@ -59,6 +61,7 @@
     "@types/react": "~19.1.10",
     "@types/react-dom": "~19.1.7",
     "babel-preset-expo": "~54.0.0",
+    "react-test-renderer": "19.1.0",
     "typescript": "~5.9.2"
   }
 }

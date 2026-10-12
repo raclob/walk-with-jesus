@@ -42,6 +42,7 @@ jobs:
       - run: npm run version:check
       - run: npm run typecheck
       - run: npm run test:summaries
+      - run: npm run test:premium
       - run: npx expo prebuild --platform android --no-install
       - run: npm run version:check
       - run: chmod +x android/gradlew

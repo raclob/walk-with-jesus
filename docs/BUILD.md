@@ -15,6 +15,7 @@ npm ci
 npm run version:check
 npm run typecheck
 npm run test:summaries
+npm run test:premium
 npm run export:android
 ```
 
@@ -54,7 +55,11 @@ Summaries need no backend, API key, account, or paid provider. The instant extra
 
 See [AI.md](AI.md) for the pinned model, licensing, download integrity, privacy, and remaining device checks. `llama.rn` native libraries install through its checksum-verified postinstall step. In a proxy-only development environment, that downloader needs proxy support or a manually verified native-archive installation. GitHub-hosted CI performs the normal install.
 
-The Expo plugin `app/plugins/with-on-device-ai.cjs` compresses native libraries for a practical APK size and copies `app/licenses/` into the Android assets directory. Model weights are downloaded separately and must not be committed to Git. The original server route in `app/backend-reference/` is retained as historical reference; the v0.003 app does not call it.
+The Expo plugin `app/plugins/with-on-device-ai.cjs` compresses native libraries for a practical APK size and copies `app/licenses/` into the Android assets directory. Model weights are downloaded separately and must not be committed to Git. The original server route in `app/backend-reference/` is retained as historical reference; the v0.004 app does not call it.
+
+## Optional billing
+
+The default build disables checkout and keeps all free features and Premium previews available. To enable real one-time purchases, follow [MONETIZATION.md](MONETIZATION.md) and set `EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY` to the public `goog_` Android SDK key before building. Never place secret RevenueCat or Google credentials in the app. Store prices and verified Premium status come from Google Play/RevenueCat; a Play test-track installation is required for store acceptance testing.
 
 ## Continuous integration and releases
 
@@ -62,4 +67,4 @@ The Android workflow runs on pushes to `main`, pull requests, and manual dispatc
 
 Published test APKs are tracked in `downloads/` so GitHub's source ZIP includes an installable app. Follow [VERSIONING.md](VERSIONING.md) when publishing an update. Device testing is tracked separately in [STATUS.md](STATUS.md).
 
-The v0.003 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.
+The v0.004 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Walk with Jesus",
     "slug": "walk-with-jesus",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "walkwithjesus",
@@ -18,7 +18,7 @@
     },
     "android": {
       "package": "com.walkwithjesus.app",
-      "versionCode": 3,
+      "versionCode": 4,
       "edgeToEdgeEnabled": true,
       "softwareKeyboardLayoutMode": "resize",
       "permissions": [],
@@ -43,7 +43,7 @@
       "reactCompiler": true
     },
     "extra": {
-      "releaseVersion": "0.003"
+      "releaseVersion": "0.004"
     }
   }
 }

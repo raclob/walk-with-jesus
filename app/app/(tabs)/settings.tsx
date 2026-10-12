@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
+import { router } from "expo-router";
 import React from "react";
 import {
   Alert,
@@ -14,6 +15,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useProgress } from "@/contexts/ProgressContext";
 import { useSettings, type DailyGoal } from "@/contexts/SettingsContext";
 import { useColors } from "@/hooks/useColors";
+import { usePremium } from "@/contexts/PremiumContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import type { JourneyType } from "@/data/journeys";
 
 const DAILY_GOALS: { value: DailyGoal; label: string }[] = [
@@ -52,11 +55,13 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const progress = useProgress();
   const settings = useSettings();
+  const { premium } = usePremium();
+  const { theme } = useTheme();
 
   const handleReset = () => {
     Alert.alert(
       "Reset everything?",
-      "This will erase all progress, prestige levels, prophecy collection, and heat map. Your journey will start completely over.",
+      "This will erase all progress, prestige levels, prophecy collection, heat map, and reading history. Your journey will start completely over.",
       [
         { text: "Cancel", style: "cancel" },
         { text: "Reset", style: "destructive", onPress: () => progress.resetAll() },
@@ -75,6 +80,24 @@ export default function SettingsScreen() {
     >
       <Text style={[styles.kicker, { color: c.mutedForeground }]}>Preferences</Text>
       <Text style={[styles.title, { color: c.foreground }]}>Settings</Text>
+
+      <Section label="Make it yours" c={c}>
+        <View style={{ gap: 10 }}>
+          {([
+            { title: "Appearance", subtitle: theme.name + " · Free and Premium themes", icon: "color-palette-outline", route: "/appearance" },
+            { title: "Reading insights", subtitle: "Private patterns and book breakdowns · Premium", icon: "bar-chart-outline", route: "/insights" },
+            { title: premium ? "Premium unlocked" : "Explore Premium", subtitle: "Optional extras · Core features stay free", icon: "sparkles-outline", route: "/premium" },
+          ] as const).map(item => <Pressable key={item.route} onPress={() => router.push(item.route)} accessibilityRole="button"
+            style={{ backgroundColor: c.card, borderColor: c.border, borderWidth: 1, borderRadius: 14, padding: 16, flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <Ionicons name={item.icon} size={22} color={c.gold} />
+            <View style={{ flex: 1, gap: 4 }}>
+              <Text style={[styles.journeyTitle, { color: c.foreground }]}>{item.title}</Text>
+              <Text style={[styles.journeySubtitle, { color: c.mutedForeground }]}>{item.subtitle}</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={18} color={c.mutedForeground} />
+          </Pressable>)}
+        </View>
+      </Section>
 
       {/* ── Journey Type ─────────────────────────────────────────── */}
       <Section label="Journey Type" c={c} mt={24}>
