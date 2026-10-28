@@ -1,6 +1,6 @@
 # Walk with Jesus for Android
 
-**[Download Walk with Jesus v0.004](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.004.apk)**
+**[Download Walk with Jesus v0.004](https://github.com/raclob/walk-with-jesus/releases/download/v0.004/walk-with-jesus-v0.004.apk)**
 
 [APK file page](downloads/walk-with-jesus-v0.004.apk) · [Release v0.004](https://github.com/raclob/walk-with-jesus/releases/tag/v0.004)
 

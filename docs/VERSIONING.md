@@ -12,5 +12,6 @@ For a new release:
 4. Copy the verified APK into `downloads/walk-with-jesus-v<version>.apk`. Preserve prior versioned files.
 5. Add its SHA-256 to `downloads/SHA256SUMS`; update the download links, changelog, and validation status.
 6. Commit the source and APK together, tag that commit `v<version>`, and create the matching GitHub release.
+7. Confirm the **Publish APK download** workflow succeeded and the APK and `SHA256SUMS` appear under the release's Assets. Use the direct `releases/download/v<version>/walk-with-jesus-v<version>.apk` URL for download buttons. If the release was created after the workflow's wait period, run that workflow manually. Keep the repository copy as a fallback.
 
 The initial APK is a development-signed ARM64 test build. Preserve the signing key for compatible test updates. Production distribution has a separate signing process.

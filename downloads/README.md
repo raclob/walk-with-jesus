@@ -1,6 +1,6 @@
 # Android downloads
 
-**[Download Walk with Jesus v0.004](https://github.com/raclob/walk-with-jesus/raw/refs/heads/main/downloads/walk-with-jesus-v0.004.apk)**
+**[Download Walk with Jesus v0.004](https://github.com/raclob/walk-with-jesus/releases/download/v0.004/walk-with-jesus-v0.004.apk)**
 
 The same APK is included here as [walk-with-jesus-v0.004.apk](walk-with-jesus-v0.004.apk). On GitHub's file page, select **Download raw file**. GitHub's source ZIP also includes this APK.
 

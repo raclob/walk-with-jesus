@@ -67,4 +67,4 @@ The Android workflow runs on pushes to `main`, pull requests, and manual dispatc
 
 Published test APKs are tracked in `downloads/` so GitHub's source ZIP includes an installable app. Follow [VERSIONING.md](VERSIONING.md) when publishing an update. Device testing is tracked separately in [STATUS.md](STATUS.md).
 
-The v0.004 release page links to the APK tracked in `downloads/`. GitHub's release-asset upload endpoint rejected this environment's authentication, so the direct repository download is the verified installation route.
+The **Publish APK download** workflow attaches the existing, checksum-verified APK and its checksum to the matching GitHub release. It runs on release publication, changes to the versioned downloads, or manual dispatch. GitHub's runner provides the upload credentials, avoiding the earlier workspace authentication failure. The v0.004 APK is now available as a direct release asset; the repository copy remains included in source ZIPs. Existing assets are compared before reuse and are never silently overwritten.
