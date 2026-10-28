@@ -1,0 +1,68 @@
+name: Publish APK download
+
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-downloads.yml
+      - VERSION
+      - downloads/**
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-apk-download
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - name: Verify and attach the existing APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          app_release=$(tr -d '\r\n' < VERSION)
+          [[ "$app_release" =~ ^0\.[0-9]{3,}$ ]]
+          release_tag="v${app_release}"
+          apk_name="walk-with-jesus-${release_tag}.apk"
+          apk_path="downloads/$apk_name"
+          test -f "$apk_path"
+          python3 - "$apk_name" <<'PY'
+          import hashlib, pathlib, sys
+          name = sys.argv[1]
+          matches = [line.split()[0] for line in pathlib.Path('downloads/SHA256SUMS').read_text().splitlines() if len(line.split()) == 2 and line.split()[1] == name]
+          assert len(matches) == 1, 'Expected one recorded checksum for this APK'
+          actual = hashlib.sha256((pathlib.Path('downloads') / name).read_bytes()).hexdigest()
+          assert actual == matches[0], 'APK does not match the recorded checksum'
+          print(f'Verified {name}: {actual}')
+          PY
+          (cd downloads && sha256sum "$apk_name") > "$RUNNER_TEMP/SHA256SUMS"
+          # Wait briefly if a push starts before its matching release is created.
+          for attempt in 1 2 3 4 5 6; do
+            if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then break; fi
+            if [ "$attempt" = 6 ]; then echo "Create release $release_tag before publishing its download." >&2; exit 1; fi
+            sleep 5
+          done
+          mkdir -p "$RUNNER_TEMP/existing-assets"
+          for candidate in "$apk_path" "$RUNNER_TEMP/SHA256SUMS"; do
+            asset_name=$(basename "$candidate")
+            if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | rg -Fxq "$asset_name"; then
+              gh release download "$release_tag" --repo "$GITHUB_REPOSITORY" --pattern "$asset_name" --dir "$RUNNER_TEMP/existing-assets"
+              cmp "$candidate" "$RUNNER_TEMP/existing-assets/$asset_name"
+              echo "Existing asset matches: $asset_name"
+            else
+              gh release upload "$release_tag" "$candidate" --repo "$GITHUB_REPOSITORY"
+            fi
+          done
+          echo "APK download: https://github.com/$GITHUB_REPOSITORY/releases/download/$release_tag/$apk_name" >> "$GITHUB_STEP_SUMMARY"
